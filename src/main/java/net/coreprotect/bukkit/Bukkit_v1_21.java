@@ -27,6 +27,10 @@ import org.bukkit.event.inventory.InventoryType;
 import net.coreprotect.model.BlockGroup;
 import net.coreprotect.utility.BlockTypeUtils;
 
+/* 1.21.x new-content material name lists, looked up at runtime so the same JAR
+   tolerates running on any 1.21.x server build (names that don't exist on the
+   running server are silently skipped). */
+
 /**
  * Bukkit adapter implementation for Minecraft 1.21.
  * Provides version-specific implementations for the BukkitInterface
@@ -49,10 +53,91 @@ public class Bukkit_v1_21 extends Bukkit_v1_20 {
         initializeBlockGroups();
         initializeTrapdoorBlocks();
         initializeBundles();
+        initializeNewContent();
         BlockGroup.INTERACT_BLOCKS.addAll(copperChestMaterials());
         BlockGroup.CONTAINERS.addAll(copperChestMaterials());
         BlockGroup.UPDATE_STATE.addAll(copperChestMaterials());
         BlockGroup.CONTAINERS.addAll(shelfMaterials());
+    }
+
+    /**
+     * Registers block content added in Minecraft 1.21.0 through 1.21.11 into the
+     * relevant block groups. Uses runtime Material.getMaterial() lookups so the same
+     * compiled JAR works against any 1.21.x Paper build — names that don't exist on
+     * the running server are silently skipped.
+     */
+    private void initializeNewContent() {
+        // Copper Bulbs (1.21) — light-state changes
+        for (String n : COPPER_BULB_NAMES) {
+            addMaterialIfExists(n, BlockGroup.UPDATE_STATE);
+        }
+
+        // Pale Garden (1.21.4)
+        addMaterialIfExists("CREAKING_HEART", BlockGroup.UPDATE_STATE);
+        addMaterialIfExists("RESIN_CLUMP", BlockGroup.NATURAL_BLOCKS);
+        addMaterialIfExists("RESIN_CLUMP", BlockGroup.NON_ATTACHABLE);
+        addMaterialIfExists("OPEN_EYEBLOSSOM", BlockGroup.TRACK_TOP);
+        addMaterialIfExists("OPEN_EYEBLOSSOM", BlockGroup.NON_ATTACHABLE);
+        addMaterialIfExists("CLOSED_EYEBLOSSOM", BlockGroup.TRACK_TOP);
+        addMaterialIfExists("CLOSED_EYEBLOSSOM", BlockGroup.NON_ATTACHABLE);
+
+        // 1.21.5 vegetation
+        for (String n : new String[] { "BUSH", "FIREFLY_BUSH", "CACTUS_FLOWER",
+                "SHORT_DRY_GRASS", "TALL_DRY_GRASS", "LEAF_LITTER", "WILDFLOWERS" }) {
+            addMaterialIfExists(n, BlockGroup.TRACK_TOP);
+            addMaterialIfExists(n, BlockGroup.NON_ATTACHABLE);
+        }
+
+        // Dried Ghast block (1.21.6) — hydration state changes
+        addMaterialIfExists("DRIED_GHAST", BlockGroup.UPDATE_STATE);
+
+        // 1.21.9 copper lanterns
+        for (String n : COPPER_LANTERN_NAMES) {
+            addMaterialIfExists(n, BlockGroup.LANTERNS);
+        }
+
+        // 1.21.9 copper torches (standing and wall variants)
+        for (String n : COPPER_TORCH_NAMES) {
+            addMaterialIfExists(n, BlockGroup.TRACK_TOP);
+            addMaterialIfExists(n, BlockGroup.NON_ATTACHABLE);
+        }
+        for (String n : COPPER_WALL_TORCH_NAMES) {
+            addMaterialIfExists(n, BlockGroup.TRACK_SIDE);
+        }
+
+        // Lanterns participate in vertical-scan tracking
+        BlockGroup.TRACK_TOP_BOTTOM.addAll(BlockGroup.LANTERNS);
+    }
+
+    private static final String[] COPPER_BULB_NAMES = {
+        "COPPER_BULB", "EXPOSED_COPPER_BULB", "WEATHERED_COPPER_BULB", "OXIDIZED_COPPER_BULB",
+        "WAXED_COPPER_BULB", "WAXED_EXPOSED_COPPER_BULB", "WAXED_WEATHERED_COPPER_BULB",
+        "WAXED_OXIDIZED_COPPER_BULB"
+    };
+
+    private static final String[] COPPER_LANTERN_NAMES = {
+        "COPPER_LANTERN", "EXPOSED_COPPER_LANTERN", "WEATHERED_COPPER_LANTERN", "OXIDIZED_COPPER_LANTERN",
+        "WAXED_COPPER_LANTERN", "WAXED_EXPOSED_COPPER_LANTERN", "WAXED_WEATHERED_COPPER_LANTERN",
+        "WAXED_OXIDIZED_COPPER_LANTERN"
+    };
+
+    private static final String[] COPPER_TORCH_NAMES = {
+        "COPPER_TORCH", "EXPOSED_COPPER_TORCH", "WEATHERED_COPPER_TORCH", "OXIDIZED_COPPER_TORCH",
+        "WAXED_COPPER_TORCH", "WAXED_EXPOSED_COPPER_TORCH", "WAXED_WEATHERED_COPPER_TORCH",
+        "WAXED_OXIDIZED_COPPER_TORCH"
+    };
+
+    private static final String[] COPPER_WALL_TORCH_NAMES = {
+        "COPPER_WALL_TORCH", "EXPOSED_COPPER_WALL_TORCH", "WEATHERED_COPPER_WALL_TORCH",
+        "OXIDIZED_COPPER_WALL_TORCH", "WAXED_COPPER_WALL_TORCH", "WAXED_EXPOSED_COPPER_WALL_TORCH",
+        "WAXED_WEATHERED_COPPER_WALL_TORCH", "WAXED_OXIDIZED_COPPER_WALL_TORCH"
+    };
+
+    private void addMaterialIfExists(String name, Set<Material> group) {
+        Material material = Material.getMaterial(name);
+        if (material != null && !group.contains(material)) {
+            group.add(material);
+        }
     }
 
     /**
