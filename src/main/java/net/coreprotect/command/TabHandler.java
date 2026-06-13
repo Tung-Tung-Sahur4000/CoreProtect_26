@@ -43,6 +43,10 @@ public class TabHandler implements TabCompleter {
         String currentArg = args[args.length - 1].toLowerCase(Locale.ROOT).trim();
         String lastArg = args.length > 1 ? args[args.length - 2].toLowerCase(Locale.ROOT).trim() : "";
 
+        if (argument0.equals("pause") && sender.hasPermission("coreprotect.pause")) {
+            return getPauseCompletions(sender, args, currentArg);
+        }
+
         ParamState paramState = getParamState(args);
 
         // Handle param-specific completions
@@ -91,6 +95,7 @@ public class TabHandler implements TabCompleter {
         addCompletionIfPermitted(sender, "coreprotect.status", "status", completions);
         addCompletionIfPermitted(sender, "coreprotect.lookup.near", "near", completions);
         addCompletionIfPermitted(sender, "coreprotect.restore", "undo", completions);
+        addCompletionIfPermitted(sender, "coreprotect.pause", "pause", completions);
 
         return StringUtil.copyPartialMatches(arg, completions, new ArrayList<>(completions.size()));
     }
@@ -99,6 +104,27 @@ public class TabHandler implements TabCompleter {
         if (sender.hasPermission(permission)) {
             completions.add(completion);
         }
+    }
+
+    private static final String[] PAUSE_SUBCOMMANDS = { "claim", "dimension", "list", "cancel" };
+    private static final String[] PAUSE_DURATIONS = { "30s", "5m", "15m", "30m", "1h", "2h" };
+
+    private List<String> getPauseCompletions(CommandSender sender, String[] args, String currentArg) {
+        if (args.length == 2) {
+            return StringUtil.copyPartialMatches(currentArg, Arrays.asList(PAUSE_SUBCOMMANDS), new ArrayList<>());
+        }
+        String sub = args[1].toLowerCase(Locale.ROOT);
+        if (args.length == 3 && (sub.equals("claim") || sub.equals("dimension") || sub.equals("dim") || sub.equals("world"))) {
+            return StringUtil.copyPartialMatches(currentArg, Arrays.asList(PAUSE_DURATIONS), new ArrayList<>());
+        }
+        if (args.length == 4 && (sub.equals("dimension") || sub.equals("dim") || sub.equals("world"))) {
+            List<String> worlds = new ArrayList<>();
+            for (org.bukkit.World w : org.bukkit.Bukkit.getWorlds()) {
+                worlds.add(w.getName());
+            }
+            return StringUtil.copyPartialMatches(currentArg, worlds, new ArrayList<>());
+        }
+        return Arrays.asList("");
     }
 
     private boolean hasLookupPermission(CommandSender sender) {
