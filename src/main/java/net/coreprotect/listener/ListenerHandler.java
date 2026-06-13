@@ -92,21 +92,16 @@ public final class ListenerHandler {
         pluginManager.registerEvents(new BlockBurnListener(), plugin);
         pluginManager.registerEvents(new BlockDispenseListener(), plugin);
         pluginManager.registerEvents(new BlockExplodeListener(), plugin);
-        pluginManager.registerEvents(new BlockFadeListener(), plugin);
-        pluginManager.registerEvents(new BlockFertilizeListener(), plugin);
+        // BlockFadeListener: skipped — nature ticks (fire dying, turtle eggs cracking) have no anti-grief value
+        // BlockFertilizeListener: skipped — bonemeal generates many child rows per use with no real grief signal
         pluginManager.registerEvents(new BlockFormListener(), plugin);
         pluginManager.registerEvents(new BlockFromToListener(), plugin);
         pluginManager.registerEvents(new BlockIgniteListener(), plugin);
         pluginManager.registerEvents(new BlockPistonListener(), plugin);
         pluginManager.registerEvents(new BlockPlaceListener(), plugin);
         pluginManager.registerEvents(new BlockSpreadListener(), plugin);
-        try {
-            Class.forName("org.bukkit.event.block.CampfireStartEvent"); // Bukkit 1.20+
-            pluginManager.registerEvents(new CampfireStartListener(), plugin);
-        }
-        catch (Exception e) {
-            CampfireStartListener.useCampfireStartEvent = false;
-        }
+        // CampfireStartListener: skipped — campfire ignition already covered by BlockIgniteListener
+        // CampfireStartEvent registration removed — see comment above.
         try {
             Class.forName("org.bukkit.event.block.TNTPrimeEvent"); // Bukkit 1.20+
             pluginManager.registerEvents(new TNTPrimeListener(), plugin);
@@ -134,7 +129,7 @@ public final class ListenerHandler {
         pluginManager.registerEvents(new EntityInteractListener(), plugin);
         pluginManager.registerEvents(new EntityPickupItemListener(), plugin);
         pluginManager.registerEvents(new EntitySpawnListener(), plugin);
-        pluginManager.registerEvents(new EntityTransformListener(), plugin);
+        // EntityTransformListener: skipped — zombie->drowned, villager->witch etc. are no anti-grief signal
         pluginManager.registerEvents(new HangingPlaceListener(), plugin);
         pluginManager.registerEvents(new HangingBreakListener(), plugin);
         pluginManager.registerEvents(new HangingBreakByEntityListener(), plugin);
@@ -158,7 +153,7 @@ public final class ListenerHandler {
         // Player Listeners
         pluginManager.registerEvents(new ArmorStandManipulateListener(), plugin);
         pluginManager.registerEvents(new CraftItemListener(), plugin);
-        pluginManager.registerEvents(new FoodLevelChangeListener(), plugin);
+        // FoodLevelChangeListener: skipped — only logs cake-eating cosmetic state, no anti-grief value
         pluginManager.registerEvents(new InventoryChangeListener(), plugin);
         pluginManager.registerEvents(new InventoryClickListener(), plugin);
         pluginManager.registerEvents(new PlayerBucketEmptyListener(), plugin);
@@ -174,13 +169,13 @@ public final class ListenerHandler {
         pluginManager.registerEvents(new PlayerQuitListener(), plugin);
         pluginManager.registerEvents(new SignChangeListener(), plugin);
         pluginManager.registerEvents(new PlayerTakeLecternBookListener(), plugin);
-        pluginManager.registerEvents(new ProjectileLaunchListener(), plugin);
+        // ProjectileLaunchListener: skipped — high-volume arrow/snowball/egg attribution we don't need here
 
         // World Listeners
         pluginManager.registerEvents(new ChunkPopulateListener(), plugin);
         pluginManager.registerEvents(new LeavesDecayListener(), plugin);
         pluginManager.registerEvents(new PortalCreateListener(), plugin);
-        pluginManager.registerEvents(new StructureGrowListener(), plugin);
+        // StructureGrowListener: skipped — tree/mushroom growth stages add many rows per growth tick
 
         // Plugin channel events
         pluginManager.registerEvents(new PluginChannelListener(), plugin);
