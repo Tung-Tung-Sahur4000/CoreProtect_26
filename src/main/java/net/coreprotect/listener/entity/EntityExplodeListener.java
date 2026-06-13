@@ -31,6 +31,9 @@ public final class EntityExplodeListener extends Queue implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR)
     protected void onEntityExplode(EntityExplodeEvent event) {
+        if (net.coreprotect.utility.PauseManager.isPaused(event.getLocation())) {
+            return;
+        }
         Entity entity = event.getEntity();
 
         if (!BukkitAdapter.ADAPTER.shouldLogExplosion(event)){

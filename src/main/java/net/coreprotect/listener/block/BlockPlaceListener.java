@@ -42,7 +42,7 @@ public final class BlockPlaceListener extends Queue implements Listener {
         if (!event.isCancelled() && Config.getConfig(world).BLOCK_PLACE) {
             Player player = event.getPlayer();
             Block blockPlaced = event.getBlockPlaced();
-            if (BlockGroup.LOG_SKIP.contains(blockPlaced.getType())) {
+            if (BlockGroup.LOG_SKIP.contains(blockPlaced.getType()) || net.coreprotect.utility.PauseManager.isPaused(blockPlaced.getLocation())) {
                 return;
             }
             String bBlockData = null;

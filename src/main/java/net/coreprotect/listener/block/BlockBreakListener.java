@@ -310,7 +310,7 @@ public final class BlockBreakListener extends Queue implements Listener {
     protected void onBlockBreak(BlockBreakEvent event) {
         if (!event.isCancelled()) {
             Block block = event.getBlock();
-            if (BlockGroup.LOG_SKIP.contains(block.getType())) {
+            if (BlockGroup.LOG_SKIP.contains(block.getType()) || net.coreprotect.utility.PauseManager.isPaused(block.getLocation())) {
                 return;
             }
             String user = event.getPlayer().getName();

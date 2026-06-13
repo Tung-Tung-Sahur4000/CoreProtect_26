@@ -509,6 +509,9 @@ public final class InventoryChangeListener extends Queue implements Listener {
         if (location == null) {
             return;
         }
+        if (net.coreprotect.utility.PauseManager.isPaused(location)) {
+            return;
+        }
 
         boolean hopperTransactions = Config.getConfig(location.getWorld()).HOPPER_TRANSACTIONS;
         if (!hopperTransactions && !Config.getConfig(location.getWorld()).ITEM_TRANSACTIONS) {

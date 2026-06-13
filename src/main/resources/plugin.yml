@@ -6,7 +6,7 @@ api-version: 1.16
 folia-supported: true
 website: http://coreprotect.net
 author: Intelli
-softdepend: [WorldEdit]
+softdepend: [WorldEdit, GriefPrevention]
 description: >
              Provides block protection for your server.
 commands:
@@ -148,3 +148,6 @@ permissions:
     coreprotect.give:
         description: Has permission to use the give command
         default: false
+    coreprotect.pause:
+        description: Has permission to temporarily pause logging in admin claims or dimensions
+        default: op

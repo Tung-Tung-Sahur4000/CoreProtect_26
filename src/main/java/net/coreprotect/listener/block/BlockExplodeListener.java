@@ -125,6 +125,9 @@ public final class BlockExplodeListener extends Queue implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR)
     protected void onBlockExplode(BlockExplodeEvent event) {
+        if (net.coreprotect.utility.PauseManager.isPaused(event.getBlock().getLocation())) {
+            return;
+        }
         Material eventMaterial = BukkitAdapter.ADAPTER.getExplodedBlock(event);
         World world = event.getBlock().getLocation().getWorld();
 
