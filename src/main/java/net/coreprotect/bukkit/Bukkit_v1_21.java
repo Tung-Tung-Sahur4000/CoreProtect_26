@@ -81,11 +81,19 @@ public class Bukkit_v1_21 extends Bukkit_v1_20 {
         addMaterialIfExists("CLOSED_EYEBLOSSOM", BlockGroup.TRACK_TOP);
         addMaterialIfExists("CLOSED_EYEBLOSSOM", BlockGroup.NON_ATTACHABLE);
 
-        // 1.21.5 vegetation
-        for (String n : new String[] { "BUSH", "FIREFLY_BUSH", "CACTUS_FLOWER",
-                "SHORT_DRY_GRASS", "TALL_DRY_GRASS", "LEAF_LITTER", "WILDFLOWERS" }) {
+        // 1.21.5 vegetation — only keep flower-like ones in TRACK_TOP for player-place
+        // tracking; the bushy/grassy ones get suppressed via LOG_SKIP below.
+        for (String n : new String[] { "CACTUS_FLOWER", "WILDFLOWERS" }) {
             addMaterialIfExists(n, BlockGroup.TRACK_TOP);
             addMaterialIfExists(n, BlockGroup.NON_ATTACHABLE);
+        }
+
+        // Skip logging for grass/bush/litter — high churn, no protection value.
+        for (String n : new String[] {
+                "SHORT_GRASS", "GRASS", "TALL_GRASS",
+                "SHORT_DRY_GRASS", "TALL_DRY_GRASS",
+                "BUSH", "FIREFLY_BUSH", "LEAF_LITTER" }) {
+            addMaterialIfExists(n, BlockGroup.LOG_SKIP);
         }
 
         // Dried Ghast block (1.21.6) — hydration state changes

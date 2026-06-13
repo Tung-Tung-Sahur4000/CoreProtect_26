@@ -309,8 +309,11 @@ public final class BlockBreakListener extends Queue implements Listener {
     @EventHandler(priority = EventPriority.MONITOR)
     protected void onBlockBreak(BlockBreakEvent event) {
         if (!event.isCancelled()) {
-            String user = event.getPlayer().getName();
             Block block = event.getBlock();
+            if (BlockGroup.LOG_SKIP.contains(block.getType())) {
+                return;
+            }
+            String user = event.getPlayer().getName();
             processBlockBreak(event.getPlayer(), user, block, Config.getConfig(block.getWorld()).BLOCK_BREAK, BlockUtil.NONE);
         }
     }
