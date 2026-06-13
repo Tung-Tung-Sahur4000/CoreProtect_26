@@ -92,7 +92,9 @@ public final class ListenerHandler {
         pluginManager.registerEvents(new BlockBurnListener(), plugin);
         pluginManager.registerEvents(new BlockDispenseListener(), plugin);
         pluginManager.registerEvents(new BlockExplodeListener(), plugin);
-        // BlockFadeListener: skipped — nature ticks (fire dying, turtle eggs cracking) have no anti-grief value
+        // BlockFadeListener re-registered; the noisy fire-extinguish branch is gated by the
+        // `fire-extinguish` config flag which defaults to false.
+        pluginManager.registerEvents(new BlockFadeListener(), plugin);
         // BlockFertilizeListener: skipped — bonemeal generates many child rows per use with no real grief signal
         pluginManager.registerEvents(new BlockFormListener(), plugin);
         pluginManager.registerEvents(new BlockFromToListener(), plugin);
@@ -120,7 +122,8 @@ public final class ListenerHandler {
 
         // Entity Listeners
         pluginManager.registerEvents(new CreatureSpawnListener(), plugin);
-        pluginManager.registerEvents(new EntityBlockFormListener(), plugin);
+        // EntityBlockFormListener: skipped — snow golem trails / frost walker have no anti-grief value;
+        // shares ENTITY_CHANGE flag with EntityChangeBlockListener so config can't isolate.
         pluginManager.registerEvents(new EntityChangeBlockListener(), plugin);
         pluginManager.registerEvents(new EntityDamageByBlockListener(), plugin);
         pluginManager.registerEvents(new EntityDamageByEntityListener(), plugin);
@@ -159,9 +162,10 @@ public final class ListenerHandler {
         pluginManager.registerEvents(new PlayerBucketEmptyListener(), plugin);
         pluginManager.registerEvents(new PlayerBucketFillListener(), plugin);
         pluginManager.registerEvents(new PlayerCommandListener(), plugin);
-        pluginManager.registerEvents(new PlayerDeathListener(), plugin);
+        // PlayerDeathListener: skipped — Simple Death Chest holds death items; EntityDeathListener still
+        // catches the kill attribution since PlayerDeathEvent extends EntityDeathEvent.
         pluginManager.registerEvents(new PlayerDropItemListener(), plugin);
-        pluginManager.registerEvents(new PlayerPickupArrowListener(), plugin);
+        // PlayerPickupArrowListener: skipped — pure arrow recovery noise; no dedicated config flag.
         pluginManager.registerEvents(new PlayerInteractEntityListener(), plugin);
         pluginManager.registerEvents(new PlayerInteractListener(), plugin);
         pluginManager.registerEvents(new PlayerItemBreakListener(), plugin);
@@ -175,7 +179,8 @@ public final class ListenerHandler {
         pluginManager.registerEvents(new ChunkPopulateListener(), plugin);
         pluginManager.registerEvents(new LeavesDecayListener(), plugin);
         pluginManager.registerEvents(new PortalCreateListener(), plugin);
-        // StructureGrowListener: skipped — tree/mushroom growth stages add many rows per growth tick
+        // StructureGrowListener re-registered; tree-growth + mushroom-growth config defaults are now false.
+        pluginManager.registerEvents(new StructureGrowListener(), plugin);
 
         // Plugin channel events
         pluginManager.registerEvents(new PluginChannelListener(), plugin);

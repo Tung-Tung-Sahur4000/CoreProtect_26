@@ -131,9 +131,9 @@ public class Config extends Language {
         DEFAULT_VALUES.put("entity-kills", "true");
         DEFAULT_VALUES.put("sign-text", "true");
         DEFAULT_VALUES.put("buckets", "true");
-        DEFAULT_VALUES.put("leaf-decay", "true");
-        DEFAULT_VALUES.put("tree-growth", "true");
-        DEFAULT_VALUES.put("mushroom-growth", "true");
+        DEFAULT_VALUES.put("leaf-decay", "false");
+        DEFAULT_VALUES.put("tree-growth", "false");
+        DEFAULT_VALUES.put("mushroom-growth", "false");
         DEFAULT_VALUES.put("vine-growth", "true");
         DEFAULT_VALUES.put("sculk-spread", "true");
         DEFAULT_VALUES.put("portals", "true");
@@ -145,7 +145,7 @@ public class Config extends Language {
         DEFAULT_VALUES.put("item-pickups", "true");
         DEFAULT_VALUES.put("hopper-transactions", "true");
         DEFAULT_VALUES.put("player-interactions", "true");
-        DEFAULT_VALUES.put("player-messages", "true");
+        DEFAULT_VALUES.put("player-messages", "false");
         DEFAULT_VALUES.put("player-commands", "true");
         DEFAULT_VALUES.put("player-sessions", "true");
         DEFAULT_VALUES.put("username-changes", "true");

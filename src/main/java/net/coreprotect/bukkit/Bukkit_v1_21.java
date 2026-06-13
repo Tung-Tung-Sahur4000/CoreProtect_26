@@ -88,11 +88,12 @@ public class Bukkit_v1_21 extends Bukkit_v1_20 {
             addMaterialIfExists(n, BlockGroup.NON_ATTACHABLE);
         }
 
-        // Skip logging for grass/bush/litter — high churn, no protection value.
+        // Skip logging for grass/bush/litter/nether ground cover — high churn, no protection value.
         for (String n : new String[] {
                 "SHORT_GRASS", "GRASS", "TALL_GRASS",
                 "SHORT_DRY_GRASS", "TALL_DRY_GRASS",
-                "BUSH", "FIREFLY_BUSH", "LEAF_LITTER" }) {
+                "BUSH", "FIREFLY_BUSH", "LEAF_LITTER",
+                "CRIMSON_ROOTS", "WARPED_ROOTS", "NETHER_SPROUTS" }) {
             addMaterialIfExists(n, BlockGroup.LOG_SKIP);
         }
 

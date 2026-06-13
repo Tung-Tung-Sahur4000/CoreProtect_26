@@ -50,13 +50,13 @@ public final class EntityChangeBlockListener extends Queue implements Listener {
             e = "#enderdragon";
         }
         else if (entity instanceof Fox) {
-            e = "#fox";
+            return; // Sweet-berry munching — pure noise, no anti-grief value.
         }
         else if (entity instanceof Wither) {
             e = "#wither";
         }
         else if (entity instanceof Turtle) {
-            e = "#turtle";
+            return; // Egg laying — natural mob behaviour, no anti-grief value.
         }
         else if (entity instanceof Ravager) {
             e = "#ravager";
