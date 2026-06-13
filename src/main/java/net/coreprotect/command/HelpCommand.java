@@ -123,6 +123,7 @@ public class HelpCommand {
                 Chat.sendMessage(player, Color.DARK_AQUA + "/co " + Color.GREY + "purge " + Color.DARK_AQUA + "<params> " + Color.WHITE + "- " + Phrase.build(Phrase.HELP_PURGE_COMMAND));
                 Chat.sendMessage(player, Color.DARK_AQUA + "/co " + Color.GREY + "reload " + Color.WHITE + "- " + Phrase.build(Phrase.HELP_RELOAD_COMMAND));
                 Chat.sendMessage(player, Color.DARK_AQUA + "/co " + Color.GREY + "status " + Color.WHITE + "- " + Phrase.build(Phrase.HELP_STATUS_COMMAND));
+                Chat.sendMessage(player, Color.DARK_AQUA + "/co " + Color.GREY + "pause " + Color.DARK_AQUA + "<claim|dimension> <duration> " + Color.WHITE + "- Temporarily pause logging (admin claim or dimension).");
             }
         }
         else {
